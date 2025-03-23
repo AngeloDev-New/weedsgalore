@@ -37,21 +37,20 @@ class net:
         g_channel = img_rgb[:, :, 1]  # Canal G
         b_channel = img_rgb[:, :, 2]  # Canal B
 
-        # Converter os canais para imagens em escala de cinza (1 canal) e salvar como BytesIO
-        r_img = cv2.imencode('.png', r_channel)[1].tobytes()
-        g_img = cv2.imencode('.png', g_channel)[1].tobytes()
-        b_img = cv2.imencode('.png', b_channel)[1].tobytes()
+        # Converter os canais para PNG em memória usando imencode
+        _, r_encoded = cv2.imencode('.png', r_channel)
+        _, g_encoded = cv2.imencode('.png', g_channel)
+        _, b_encoded = cv2.imencode('.png', b_channel)
 
-        # Criar objetos BytesIO a partir dos dados binários
-        r_io = BytesIO(r_img)
-        g_io = BytesIO(g_img)
-        b_io = BytesIO(b_img)
+        #   Criar objetos BytesIO a partir dos dados binários
+        r_io = BytesIO(r_encoded.tobytes())
+        g_io = BytesIO(g_encoded.tobytes())
+        b_io = BytesIO(b_encoded.tobytes())
 
         # Resetar o cursor dos arquivos BytesIO para leitura posterior
         r_io.seek(0)
         g_io.seek(0)
         b_io.seek(0)
-    
         return r_io, g_io, b_io
     def inferencia_modelo_by_RGB(self,RGBImage):
         r_io,g_io,b_io = self.getLayersFromImage(RGBImage)
