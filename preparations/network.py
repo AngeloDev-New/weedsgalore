@@ -59,9 +59,12 @@ class net:
                       pathG = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_G.png',
                       pathB = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_B.png',
                       ):
-        image_R = cv2.imdecode(pathR, cv2.IMREAD_GRAYSCALE)
-        image_G = cv2.imdecode(pathG, cv2.IMREAD_GRAYSCALE)
-        image_B = cv2.imdecode(pathB, cv2.IMREAD_GRAYSCALE)
+        r_data = np.asarray(bytearray(pathR.read()), dtype=np.uint8)
+        g_data = np.asarray(bytearray(pathG.read()), dtype=np.uint8)
+        b_data = np.asarray(bytearray(pathB.read()), dtype=np.uint8)
+        image_R = cv2.imdecode(r_data, cv2.IMREAD_GRAYSCALE)
+        image_G = cv2.imdecode(g_data, cv2.IMREAD_GRAYSCALE)
+        image_B = cv2.imdecode(b_data, cv2.IMREAD_GRAYSCALE)
         if image_R is None or image_G is None or image_B is None:
             raise ValueError("Erro ao carregar uma ou mais imagens.")
     # Combinar as imagens R, G, B em um array de 3 canais
