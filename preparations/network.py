@@ -25,8 +25,8 @@ class net:
         self.model.load_state_dict(state_dict)
         # Coloque o modelo em modo de avaliação
         # self.model.eval()
-
-    def inferencia_modelo_by_RGB(self,RGBImage):
+    @staticmethod
+    def getLayersFromImage(image_path):
         img = Image.open(image_path)
         img = img.convert("RGB")  # Garantir que a imagem esteja no formato RGB
 
@@ -56,6 +56,10 @@ class net:
         r_io.seek(0)
         g_io.seek(0)
         b_io.seek(0)
+        return (r_io,g_io,b_io)
+    
+    def inferencia_modelo_by_RGB(self,RGBImage):
+        r_io,g_io,b_io = self.getLayersFromImage(RGBImage)
         self.inferencia_modelo(r_io,g_io,b_io)
     def inferencia_modelo(self,pathR = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_R.png',
                       pathG = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_G.png',
