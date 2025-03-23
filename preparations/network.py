@@ -13,19 +13,19 @@ def Model(num_classes = 3,
     net.backbone.conv1 = nn.Conv2d(in_channels, net.backbone.conv1.out_channels, kernel_size=7, stride=2, padding=3, bias=False, device=device)
 
     return net
+def path(PATH_TO_PTH):
+    model = Model() 
+    # PATH_TO_PTH = './modelos/ckpts/dlv3p_rgb_3.pth'
+    state_dict = torch.load(PATH_TO_PTH, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+    model.load_state_dict(state_dict)
 
-model = Model() 
-PATH_TO_PTH = './modelos/ckpts/dlv3p_rgb_3.pth'
-state_dict = torch.load(PATH_TO_PTH, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu"))
-model.load_state_dict(state_dict)
-
-# Coloque o modelo em modo de avaliação
-model.eval()
+    # Coloque o modelo em modo de avaliação
+    model.eval()
 
 def inferencia_modelo(pathR = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_R.png',
                       pathG = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_G.png',
                       pathB = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_B.png',
-                      model = model
+                      model
                       ):
     image_R = cv2.imread(pathR, cv2.IMREAD_GRAYSCALE)
     image_G = cv2.imread(pathG, cv2.IMREAD_GRAYSCALE)
