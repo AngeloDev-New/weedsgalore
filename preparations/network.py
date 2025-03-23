@@ -5,7 +5,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from torchvision import transforms
-from PIL import Image
 from io import BytesIO
 class net:
     def __init__(self,path_pth):
@@ -27,37 +26,33 @@ class net:
         # self.model.eval()
     @staticmethod
     def getLayersFromImage(image_path):
-        img = Image.open(image_path)
-        img = img.convert("RGB")  # Garantir que a imagem esteja no formato RGB
+        # Carregar a imagem com OpenCV
+        img = cv2.imread(image_path)
+    
+        # Garantir que a imagem esteja no formato RGB (OpenCV carrega por padrão em BGR)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    
+        # Separar os canais R, G, B
+        r_channel = img_rgb[:, :, 0]  # Canal R
+        g_channel = img_rgb[:, :, 1]  # Canal G
+        b_channel = img_rgb[:, :, 2]  # Canal B
 
-        # Converter a imagem para um array NumPy
-        img_array = np.array(img)
+        # Converter os canais para imagens em escala de cinza (1 canal) e salvar como BytesIO
+        r_img = cv2.imencode('.png', r_channel)[1].tobytes()
+        g_img = cv2.imencode('.png', g_channel)[1].tobytes()
+        b_img = cv2.imencode('.png', b_channel)[1].tobytes()
 
-    # Separar os canais R, G, B
-        r_channel = img_array[:, :, 0]  # Canal R
-        g_channel = img_array[:, :, 1]  # Canal G
-        b_channel = img_array[:, :, 2]  # Canal B
+        # Criar objetos BytesIO a partir dos dados binários
+        r_io = BytesIO(r_img)
+        g_io = BytesIO(g_img)
+        b_io = BytesIO(b_img)
 
-    # Converter os canais para imagens em escala de cinza (1 canal) e salvar como BytesIO
-        r_img = Image.fromarray(r_channel)
-        g_img = Image.fromarray(g_channel)
-        b_img = Image.fromarray(b_channel)
-
-    # Converter as imagens para BytesIO
-        r_io = BytesIO()
-        g_io = BytesIO()
-        b_io = BytesIO()
-
-        r_img.save(r_io, format='PNG')
-        g_img.save(g_io, format='PNG')
-        b_img.save(b_io, format='PNG')
-
-    # Resetar o cursor dos arquivos BytesIO para leitura posterior
+        # Resetar o cursor dos arquivos BytesIO para leitura posterior
         r_io.seek(0)
         g_io.seek(0)
         b_io.seek(0)
-        return (r_io,g_io,b_io)
     
+        return r_io, g_io, b_io
     def inferencia_modelo_by_RGB(self,RGBImage):
         r_io,g_io,b_io = self.getLayersFromImage(RGBImage)
         self.inferencia_modelo(r_io,g_io,b_io)
