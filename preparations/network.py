@@ -1,4 +1,4 @@
-from src.nets import deeplabv3plus_resnet50
+from weedsgalore.src.nets import deeplabv3plus_resnet50
 import torch
 import torch.nn as nn
 import cv2
