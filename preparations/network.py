@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from torchvision import transforms
+from PIL import Image
+from io import BytesIO
 class net:
     def __init__(self,path_pth):
         self.Model()
@@ -24,6 +26,37 @@ class net:
         # Coloque o modelo em modo de avaliação
         # self.model.eval()
 
+    def inferencia_modelo_by_RGB(self,RGBImage):
+        img = Image.open(image_path)
+        img = img.convert("RGB")  # Garantir que a imagem esteja no formato RGB
+
+        # Converter a imagem para um array NumPy
+        img_array = np.array(img)
+
+    # Separar os canais R, G, B
+        r_channel = img_array[:, :, 0]  # Canal R
+        g_channel = img_array[:, :, 1]  # Canal G
+        b_channel = img_array[:, :, 2]  # Canal B
+
+    # Converter os canais para imagens em escala de cinza (1 canal) e salvar como BytesIO
+        r_img = Image.fromarray(r_channel)
+        g_img = Image.fromarray(g_channel)
+        b_img = Image.fromarray(b_channel)
+
+    # Converter as imagens para BytesIO
+        r_io = BytesIO()
+        g_io = BytesIO()
+        b_io = BytesIO()
+
+        r_img.save(r_io, format='PNG')
+        g_img.save(g_io, format='PNG')
+        b_img.save(b_io, format='PNG')
+
+    # Resetar o cursor dos arquivos BytesIO para leitura posterior
+        r_io.seek(0)
+        g_io.seek(0)
+        b_io.seek(0)
+        self.inferencia_modelo(r_io,g_io,b_io)
     def inferencia_modelo(self,pathR = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_R.png',
                       pathG = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_G.png',
                       pathB = './data_weedsgalore/weedsgalore-dataset/2023-06-15/images/2023-06-15_0735_B.png',
