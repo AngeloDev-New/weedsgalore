@@ -63,7 +63,7 @@ class net:
         input_image = input_image.to(device)
 
     # Certifique-se de que o modelo está no dispositivo correto
-        self.model = model.to(device)
+        self.model = self.model.to(device)
 
     # Colocar o modelo em modo de avaliação
         self.model.eval()
