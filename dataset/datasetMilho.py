@@ -34,7 +34,7 @@ class DatasetMilho(Dataset):
         if self.transform:
             imagen = self.transform(imagen)
             mascara = self.transform(mascara)
-
+        imagen = imagen.unsqueeze(0)
         return imagen, mascara
     
     @staticmethod
