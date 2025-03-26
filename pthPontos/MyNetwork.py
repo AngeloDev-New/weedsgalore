@@ -6,4 +6,5 @@ def getModel(path, num_classes=3, in_channels=3):
     net = deeplabv3plus_resnet50(num_classes=num_classes)
     net = net.to(device)
     net.backbone.conv1 = nn.Conv2d(in_channels, net.backbone.conv1.out_channels, kernel_size=7, stride=2, padding=3, bias=False, device=device)
+    net.eval()
     return net

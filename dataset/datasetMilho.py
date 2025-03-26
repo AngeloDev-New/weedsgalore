@@ -54,7 +54,8 @@ class DatasetMilho(Dataset):
                 semantic = cv2.rotate(semantic, cv2.ROTATE_90_CLOCKWISE)
                 image = cv2.flip(image, 0)
                 semantic = cv2.flip(semantic, 0)
-
+        image = torch.from_numpy(image).float()
+        semantic = torch.from_numpy(semantic).float()
         return image, semantic
 
     @staticmethod
