@@ -1,0 +1,9 @@
+# Ignorar a pasta venv em qualquer lugar do repositório  
+venv/  
+**/venv/  
+
+# Ignorar todos os arquivos PNG em qualquer subpasta  
+**/*.png  
+
+# Ignorar todos os arquivos .pth em qualquer subpasta  
+**/*.pth  
