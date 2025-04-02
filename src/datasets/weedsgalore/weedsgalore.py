@@ -13,7 +13,9 @@ from utils import augment_data
 
 class WeedsGaloreDataset(Dataset):
     def __init__(self, dataset_path, dataset_size, in_bands, num_classes, is_training, split, augmentation):
+        # diretorios das imagens
         self.img_dir = os.path.join(dataset_path)
+        # separar por cores in_bands recebe 3 red_band, green_band, blue_band ou 5 red_band, green_band, blue_band, nir_band, re_band
         self.in_bands = in_bands
         self.num_classes = num_classes
         self.is_training = is_training
@@ -38,19 +40,28 @@ class WeedsGaloreDataset(Dataset):
             idx = idx.tolist()
 
         # load single bands and construct input image
-        img_path = os.path.join(self.img_dir, self.img_list[idx][:10], 'images', self.img_list[idx])
-        red_band = plt.imread(img_path + '_R.png')
-        green_band = plt.imread(img_path + '_G.png')
-        blue_band = plt.imread(img_path + '_B.png')
-        nir_band = plt.imread(img_path + '_NIR.png')
-        re_band = plt.imread(img_path + '_RE.png')
+        # image dir r'data\nao_temporal'+self.img_list[idx][:10]+'images'
+        # 'data\\nao_temporal\\9_image\\images\\9_image_R.png'
+        # img_path = os.path.join(self.img_dir, self.img_list[idx][:10], 'images', self.img_list[idx])
+        img_path = os.path.join(self.img_dir, 'images', self.img_list[idx])
+        #tive que alterar pois as imgens do meu dataset n contem nir ou re
         if self.in_bands == 3:
+            red_band = plt.imread(img_path + '_R.png')
+            green_band = plt.imread(img_path + '_G.png')
+            blue_band = plt.imread(img_path + '_B.png')
             img = np.stack((red_band, green_band, blue_band))
         elif self.in_bands == 5:
+            red_band = plt.imread(img_path + '_R.png')
+            green_band = plt.imread(img_path + '_G.png')
+            blue_band = plt.imread(img_path + '_B.png')
+            nir_band = plt.imread(img_path + '_NIR.png')
+            re_band = plt.imread(img_path + '_RE.png')
             img = np.stack((red_band, green_band, blue_band, nir_band, re_band))
 
         # load semantic label
-        label_path = os.path.join(self.img_dir, self.img_list[idx][:10], 'semantics', self.img_list[idx])
+        # [Errno 2] No such file or directory: 'data\\nao_temporal\\9_image\\semantics\\9_image.png'
+        # label_path = os.path.join(self.img_dir, self.img_list[idx][:10], 'semantics', self.img_list[idx])
+        label_path = os.path.join(self.img_dir, 'semantics', self.img_list[idx])
         label = Image.open(label_path + '.png')
         label = np.array(label)
 

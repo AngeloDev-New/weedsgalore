@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from PIL import Image
 import matplotlib.pyplot as plt
-from dataset.datasetMilho import DatasetMilho
+from data.nao_temporal.datasetMilho import DatasetMilho
 
 def salvar(image, threshold_r=128, threshold_g=128, threshold_b=128, threshold_final=128, save=False):
     # Convertendo a imagem para um formato manipulável

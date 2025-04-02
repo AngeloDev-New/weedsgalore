@@ -1,4 +1,4 @@
-from dataset.datasetMilho import DatasetMilho
+from data.nao_temporal.datasetMilho import DatasetMilho
 import matplotlib.pyplot as plt
 milho_dataset = DatasetMilho()
 image,semantic = milho_dataset.getRealItem(0)
